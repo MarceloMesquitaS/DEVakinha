@@ -53,7 +53,7 @@ export default async function Apoia({
           className="bg-gray-50 rounded-md p-5 h-fit mx-2"
         >
           <h3 className="font-semibold text-lg">
-            Apoie o Matheus Fraga:
+            Apoie o Marcelo Mesquita:
           </h3>
 
 
