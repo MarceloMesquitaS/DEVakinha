@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { UrlPreview } from "./_components/url";
+import { CardProfile } from "./_components/card-profile";
 
 export default async function Me() {
 const session = await auth();
@@ -23,7 +24,9 @@ const session = await auth();
       >
         <UrlPreview userName= {userData.userName}  />
       </section>
-
+    
+    
+    <CardProfile user={userData}></CardProfile>
 
     </main >
   )
