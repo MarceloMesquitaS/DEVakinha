@@ -3,19 +3,13 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { createPayments } from "../_actions/create-payments";
 
 
 const formSchema = z.object({
@@ -27,8 +21,12 @@ const formSchema = z.object({
 })
 type FormData = z.infer<typeof formSchema>
 
+interface FormDonateProps {
+    creatorId: string;
+    slug: string;
+}
 
-export function FormDonate() {
+export function FormDonate({ slug, creatorId }: FormDonateProps) {
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -40,8 +38,25 @@ export function FormDonate() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(data: FormData) {
+
+        const priceIncents = Number(data.price) * 100;// Convertendo o valor para centavos
+
+        const checkout = await createPayments({
+
+            nome: data.name,
+            message: data.message,
+            creatorId: creatorId,
+            slug: slug,
+            price: priceIncents,
+
+        })
+
+                console.log(checkout);
+
+
+
+
     }
     return (
         <Form {...form}>
@@ -93,7 +108,7 @@ export function FormDonate() {
                                     className="flex items-center gap-3"
                                 >
                                     {["15", "25", "35"].map((value) => (
-                                        <div key= {value} className="flex items-center gap-3">
+                                        <div key={value} className="flex items-center gap-3">
                                             <RadioGroupItem value={value} id={value} />
                                             <Label className="text-lg" htmlFor={value}>R$ {value} </Label>
                                         </div>

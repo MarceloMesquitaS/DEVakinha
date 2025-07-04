@@ -4,10 +4,6 @@ import { getInfoUser } from "./_data-access/get-info-user";
 import { notFound } from "next/navigation";
 import { FormDonate } from "./_components/form";
 
-type User = {
-  image?: string;
-  // add other properties as needed
-};
 
 export default async function Apoia({
   params,
@@ -16,7 +12,7 @@ export default async function Apoia({
 }) {
   const { username } = await params;
 
-  const user: User | null = await getInfoUser({ username });
+  const user = await getInfoUser({ username });
 
   if (!user ) {
     return notFound();
@@ -69,7 +65,7 @@ export default async function Apoia({
           <h3 className="font-semibold text-lg">
             {user.name ? `Apoiar ${user.name}` : "Apoiar criador"}
           </h3>
-          <FormDonate />
+          <FormDonate slug = {user.username!} creatorId = {user.id} />
 
         </section>
       </div>
